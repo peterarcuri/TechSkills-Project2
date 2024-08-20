@@ -18,42 +18,40 @@ function decryptLetter(letter, shiftValue) {
 }
 
 // function inserts a random letter every 2 within the index
-function insertRandomLetters(str) {
-    function randomLetter() {
-        return alphabet[Math.floor(Math.random() * alphabet.length)];
-    }
+function randomLetter2(encryptMessage) {
+    let n = 2;
+    let insertChar = alphabet[Math.floor(Math.random() * alphabet.length)];
+    
+    let chars = [...encryptMessage];
+    chars.splice(n, 0, insertChar);
+    const newLetter = chars.join('');
 
-    let result = "";
-
-    for (let i = 0; i < str.length; i++) {
-        result += str[i];
-
-        if ((i + 1) % 2 === 0) {
-            result += randomLetter();
-        }
-    }
-    return result;
-};
+    return newLetter;
+}
 
 // function removes every other character in a string and returns original text
-
 function removeEveryOtherChar(str) {
-    let result = '';
-    let alphabetCount = 0;
+    let result = "";
+    let counter = 0;
 
     for (let i = 0; i < str.length; i++) {
-        const char = str[i];
-        if (/[a-zA-Z]/.test(char)) {
-            if (alphabetCount % 2 === 0) {
+        let char = str[i];
+
+        // Check if the character is a valid letter (i.e., part of the alphabet)
+        if (char.toLowerCase() !== char.toUpperCase()) {
+            // Add the character to the result if the counter is even
+            if (counter % 2 === 0) {
                 result += char;
             }
-            alphabetCount++;
+            // Increment the counter only for valid characters
+            counter++;
+        } else {
+            // Always include spaces and non-alphabet characters in the result
+            result += char;
         }
-        else 
-        result += str[i];
     }
     return result;
-};
+}
 
 
 // encryption function takes in a word/message and shifts every letter by specified amount
