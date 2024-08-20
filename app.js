@@ -11,9 +11,11 @@ function encryptLetter(letter, shiftValue) {
 
 // same as encryptLetter function but shifts in reverse
 function decryptLetter(letter, shiftValue) {
-
     const index = alphabet.indexOf(letter.toLowerCase());
-    const newIndex = (index - shiftValue + alphabet.length) % alphabet.length;
+    let newIndex = (index - shiftValue + alphabet.length) % alphabet.length;
+    if (newIndex < 0) {
+        newIndex += alphabet.length;
+    }
     return alphabet[newIndex];
 }
 
@@ -51,7 +53,7 @@ function removeEveryOtherChar(str) {
         }
     }
     return result;
-}
+};
 
 
 // encryption function takes in a word/message and shifts every letter by specified amount
@@ -64,7 +66,7 @@ function encrypt(message, shiftValue) {
 
         if (alphabet.includes(char)) {
             let result = encryptLetter(message[i], shiftValue);
-            encryptedMessage += insertRandomLetters(result);
+            encryptedMessage += randomLetter2(result);
         }
         else {
             encryptedMessage += char;
@@ -73,23 +75,29 @@ function encrypt(message, shiftValue) {
     return encryptedMessage;
 };
 
-console.log(encrypt("Hello Brutus Meet at the garden", 3));
+console.log(encrypt("Hello brutus. Meet me at the garden", 3));
 
 
 // decrypt function takes in encrypted message, reverses the shift value and removes every other random letter using the removeEveryOtherChar function
 function decrypt(encryptedMessage, shiftValue) {
 
     let decryptedMessage = ""; 
-      
+   
+    encryptedMessage = removeEveryOtherChar(encryptedMessage);
 
     for (let i = 0; i < encryptedMessage.length; i++) {        
-
-        decryptedMessage += removeEveryOtherChar(encryptedMessage);
-        decryptedMessage += decryptLetter(encryptedMessage[i], shiftValue);
-              
+        
+        if (alphabet.includes(encryptedMessage[i])) {
+            decryptedMessage += decryptLetter(encryptedMessage[i], shiftValue);
+           
+        } else {
+            decryptedMessage += encryptedMessage[i];
+        }     
+        
     }
     return decryptedMessage;
 };
 
-console.log(decrypt("hrealvlcon bardutttupsk mdeoeitv artz tnhhee gzagrtdmemnz", 3));
+console.log(decrypt("kvhjozopri eyumxfwgxkvx. pthkhdwc pahl dlwe wfkbhh jadjuvgvhwqj", 3));
+
 
